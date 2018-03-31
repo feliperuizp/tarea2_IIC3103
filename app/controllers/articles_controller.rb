@@ -35,6 +35,7 @@ class ArticlesController < ApplicationController
 
   # DELETE /articles/1
   def destroy
+    render json: @article
     @article.destroy
   end
 
