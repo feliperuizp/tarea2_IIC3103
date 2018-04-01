@@ -42,7 +42,7 @@ class ArticlesController < ApplicationController
 
   private
     def record_not_found(error)
-      render :json => {:error => "Articulo no encontrado"}.to_json, :status => 404
+      render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
     end
 
     # Use callbacks to share common setup or constraints between actions.
