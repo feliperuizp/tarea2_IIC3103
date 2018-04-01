@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   # GET /articles
   def index
@@ -40,6 +41,10 @@ class ArticlesController < ApplicationController
   end
 
   private
+    def record_not_found(error)
+      render :json => {:error => "Articulo no encontrado"}.to_json, :status => 404
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find(params[:id])
