@@ -43,7 +43,7 @@ class ArticlesController < ApplicationController
 
   private
     def record_not_found(error)
-      head error
+      render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
     end
 
     def define_content_header
