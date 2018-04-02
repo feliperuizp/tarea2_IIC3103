@@ -1,10 +1,13 @@
 class CommentsController < ApplicationController
+  before_action :define_content_header
+  before_action :define_article
   before_action :set_comment, only: [:show, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   
   # GET /comments
   def index
-    @comments = Comment.all
+    @article = Article.find(params[:article_id])
+    @comments = @article.comments.all
     render json: @comments
   end
 
@@ -15,7 +18,6 @@ class CommentsController < ApplicationController
 
   # POST /comments
   def create
-    @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
     if @comment.save
       render json: @comment, status: :created, location: @article
@@ -35,12 +37,21 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   def destroy
+    render json: @comment
     @comment.destroy
   end
 
   private
     def record_not_found(error)
       render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
+    end
+
+    def define_content_header
+      response.headers["Content-Type"] = "application/json"
+    end
+
+    def define_article
+      @article = Article.find(params[:article_id])
     end
 
     # Use callbacks to share common setup or constraints between actions.
@@ -50,7 +61,7 @@ class CommentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:author, :cbody)
+      params.permit(:author, :comment)
   end
 
 end
