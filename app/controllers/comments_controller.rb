@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :define_content_header
   before_action :set_comment, only: [:show, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   
@@ -35,12 +36,17 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   def destroy
+    render json: @comment
     @comment.destroy
   end
 
   private
     def record_not_found(error)
-      render :json => {:error => "Comentario no encontrado"}.to_json, :status => 404
+      head error
+    end
+
+    def define_content_header
+      response.headers["Content-Type"] = "application/json"
     end
 
     # Use callbacks to share common setup or constraints between actions.

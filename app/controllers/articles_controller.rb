@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  before_action :define_content_header
   before_action :set_article, only: [:show, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
@@ -42,7 +43,11 @@ class ArticlesController < ApplicationController
 
   private
     def record_not_found(error)
-      render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
+      head error
+    end
+
+    def define_content_header
+      response.headers["Content-Type"] = "application/json"
     end
 
     # Use callbacks to share common setup or constraints between actions.
