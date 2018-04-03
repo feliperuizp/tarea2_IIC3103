@@ -6,6 +6,11 @@ class ArticlesController < ApplicationController
   # GET /articles
   def index
     @articles = Article.all
+    @articles.each do |article|
+      if article.body.length >= 500
+        article.body = article.body.first(500)
+      end
+    end
     render json: @articles
   end
 
