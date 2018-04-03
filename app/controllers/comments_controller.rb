@@ -43,7 +43,7 @@ class CommentsController < ApplicationController
 
   private
     def record_not_found(error)
-      render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
+      render :json => {:error => "Not Found"}.to_json, :status => 404
     end
 
     def define_content_header
