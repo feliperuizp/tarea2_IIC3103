@@ -6,7 +6,6 @@ class ArticlesController < ApplicationController
   # GET /articles
   def index
     @articles = Article.all
-
     render json: @articles
   end
 
@@ -43,7 +42,7 @@ class ArticlesController < ApplicationController
 
   private
     def record_not_found(error)
-      render :json => {:error => "/^not found$/gi"}.to_json, :status => 404
+      render :json => {:error => `/^not found$/gi`}.to_json, :status => 404
     end
 
     def define_content_header
